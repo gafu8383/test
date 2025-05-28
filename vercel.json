@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/api/get-webhook-url", "dest": "/api/get-webhook-url.js" }
+  ],
+  "env": {
+    "DISCORD_WEBHOOK_URL": "@discord_webhook_url"
+  }
+}
