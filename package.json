@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "description": "Vercel deploy for Discord webhook token analyzer.",
   "main": "index.html",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "18.x"
+  }
 }
