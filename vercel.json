@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/api/get-webhook-url", "dest": "/api/get-webhook-url.js" }
-  ],
   "functions": {
     "api/get-webhook-url.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "@vercel/node@3.0.0"
     }
   }
 }
