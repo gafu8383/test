@@ -3,7 +3,9 @@
   "routes": [
     { "src": "/api/get-webhook-url", "dest": "/api/get-webhook-url.js" }
   ],
-  "env": {
-    "DISCORD_WEBHOOK_URL": "@discord_webhook_url"
+  "functions": {
+    "api/get-webhook-url.js": {
+      "runtime": "nodejs18.x"
+    }
   }
 }

