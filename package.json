@@ -1,0 +1,7 @@
+{
+  "name": "discord-grabber",
+  "version": "1.0.0",
+  "description": "Vercel deploy for Discord webhook token analyzer.",
+  "main": "index.html",
+  "license": "MIT"
+}
